@@ -1,19 +1,24 @@
 //Google Maps
 function initialize() {
-    console.log(LongLatArray);
+  console.log(LongLatArray);
 
-	  var myLatlng = new google.maps.LatLng(42.37,-71.11);
-    var mapOptions = {
-        center: { lat: 42.3744, lng: - 71.1169},
-        zoom: 14
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  var myLatlng = new google.maps.LatLng(42.37,-71.11);
+  var mapOptions = {
+      center: { lat: 42.3744, lng: - 71.1169},
+      zoom: 14
+  };
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+//Takes lng and lat from LongLatArray and applies them to set markers on the map
+  for (var index in LongLatArray) {
+    var element = LongLatArray[index];
+    var newLatlng = new google.maps.LatLng(element.lat, element.lng);
   	var marker = new google.maps.Marker({
-		position: myLatlng,
-		map: map,
-		title:"Hello World!"
+  		position: newLatlng,
+  		map: map,
+  		title:"Hello World!"
 	  });
+  }
 }
 
 var LongLatArray = []; //Array of venues' longitudes and latitudes 
