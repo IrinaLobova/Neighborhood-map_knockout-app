@@ -11,17 +11,16 @@
     </script>
 </head>
 <body>
-    <form id="form-container">
-	    <label for="neighborhood">I live in: </label>
-	    <input type="text" id="neighborhood" value="">
-	    <label for="food">I want to eat: </label>
-	    <input type="text" id="food" value="">
-	    <button id="submit-btn">Submit</button>
-	</form>	
+	<label for="address">I live in: </label>
+    <input type="text" id="address" value="">
+    <label for="food">I want to eat: </label>
+    <input type="text" id="food" value="">
+    <button id="address" onclick="codeAddress()">Submit</button>
+
 	<!-- To load google map-->	
 	<div id="map-canvas"></div>
 	<!-- Venues list -->
-    <ul data-bind="foreach: AllLocations">
+    <ul data-bind="foreach: AllLocations" id="list">
   		<li data-bind="text: name"></li>
 	</ul>
 
