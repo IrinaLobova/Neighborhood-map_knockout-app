@@ -1,9 +1,13 @@
 //Google Maps
-var q = {lat: 42.3744, lng: -71.1169, food: 'pizza'};
+var initialLocation;
+var browserSupportFlag =  new Boolean();
+var q = {lat: 42.5000, lng: -71.5833, food: 'pastry'}
 var geocoder;
 var map;
 var AllLocations = ko.observableArray([]);
 var markers = [];
+
+document.addEventListener('DOMContentLoaded', main());
 
 function main () {
   initialize();// loads google map only after AllLocations and dataArray are loaded
@@ -11,14 +15,44 @@ function main () {
 };
 
 function initialize() {
-
   geocoder = new google.maps.Geocoder();
-  var myLatlng = new google.maps.LatLng(q.lat, q.lng);
+  var cambridge = new google.maps.LatLng(q.lat, q.lng);
   var mapOptions = {
       center: {lat: q.lat, lng: q.lng},
-      zoom: 13
+      zoom: 12,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  // Geolocation
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+      q.lat = initialLocation.latitude;
+      q.lng = initialLocation.longitude;
+
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  }
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      initialLocation = cambridge;
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Cambridge MA.");
+      initialLocation = cambridge;
+    }
+    map.setCenter(initialLocation);
+  }
 } 
 
 // Takes address (value from the input box), converts it to new lat and lng and updates the map.
@@ -95,7 +129,3 @@ function setMarkers (dataArray) {
     }); 
   } //end for loop
 }//end setMarkers
-
-document.addEventListener('ready', main());
-
-
