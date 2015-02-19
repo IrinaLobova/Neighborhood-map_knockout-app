@@ -1,7 +1,9 @@
-//Google Maps
+// Project 5, neighborhood map for Udacidy Frontend Nanodegree
+// Author: Irina Lobova
+
 var initialLocation;
 var browserSupportFlag =  new Boolean();
-var q = {lat: 42.5000, lng: -71.5833, food: 'pastry'}
+var q = {lat: 42.36690, lng: -71.10610, food: 'thai'}
 var geocoder;
 var map;
 var AllLocations = ko.observableArray([]);
@@ -45,10 +47,8 @@ function initialize() {
 
   function handleNoGeolocation(errorFlag) {
     if (errorFlag == true) {
-      alert("Geolocation service failed.");
       initialLocation = cambridge;
     } else {
-      alert("Your browser doesn't support geolocation. We've placed you in Cambridge MA.");
       initialLocation = cambridge;
     }
     map.setCenter(initialLocation);
@@ -101,14 +101,14 @@ function ViewModel() {
     for (var index in data.response.venues) { 
       var item = data.response.venues[index];
       AllLocations.push(item);
+      console.log(item);
       dataArray.push({lat: item.location.lat, lng: item.location.lng, name: item.name});//put data to LongLatArray 
-    } //end for loop
+    }
     setMarkers(dataArray);
-  }); //end of anonymous function
-} //end of ViewModel
+  }); 
+} 
 
 //Takes lng and lat from dataArray and applies them to set markers on the map
-//end initialize
 function setMarkers (dataArray) {
   for (var index in dataArray) {
     var element = dataArray[index];
@@ -127,5 +127,27 @@ function setMarkers (dataArray) {
       infowindow.open(map, this);
       infowindow.setContent(this.content);    
     }); 
-  } //end for loop
-}//end setMarkers
+  }
+}
+
+//When the link in the list is clicked, take lat and lng from the passed data and set the map zoom 
+//according to these parametres 
+function clickHandler(data) {
+  map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
+  map.setZoom(16);
+  for (var i = 0; i < markers.length; i++) {    
+    if (data.name === markers[i].content) {      
+      toggleBounce(markers[i]); // apply animation
+    }
+  } 
+}
+
+//Create animation for the marker when its corresponding li is clicked
+function toggleBounce(currentIcon) {
+  if (currentIcon.getAnimation() != null) {
+    currentIcon.setAnimation(null);
+  } else {
+   currentIcon.setAnimation(google.maps.Animation.BOUNCE);
+   setTimeout(function(){ currentIcon.setAnimation(null); }, 1400);
+  }
+};
