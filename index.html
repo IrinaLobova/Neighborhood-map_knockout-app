@@ -5,28 +5,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cambridge MA map</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="css/foundation.min.css">
 	<!-- Google Maps API -->
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOC_hRjOL_BtQmmnMHhyzckD3TJ70VTgw">
     </script>
 </head>
 <body>
-	<label for="address">I live in: </label>
-    <input type="text" id="address" value="">
-    <label for="food">I want to eat: </label>
-    <input type="text" id="food" value="">
-    <button id="address" onclick="codeAddress()">Submit</button>
-
-	<!-- To load google map-->	
-	<div id="map-canvas"></div>
-	<!-- Venues list -->
-    <ul data-bind="foreach: AllLocations" id="list">
-  		<li><a data-bind="text: name, click: clickHandler, attr: {location: location}"></a></li>
-  		<li id="address-line" data-bind="text: location.address + ', ' + location.city"></li>		
-	</ul>
-
+	<div class="container">
+		<div id="map-canvas"></div>
+		<div class="search">
+			<label for="address">I live in: </label>
+		    <input type="text" id="address" value="" placeholder="neighborgood">
+		    <label for="food">I want to eat: </label>
+		    <input type="text" id="food" value="" placeholder="type of food">
+		    <button id="address" onclick="codeAddress()">Submit</button>
+	    </div>
+		<ul class="scrollList" data-bind="foreach: AllLocations" id="list">
+		  	<li><a data-bind="text: name, click: clickHandler, attr: {location: location}"></a></li>
+		  	<li data-bind="text: location.address + ', ' + location.city"></li>		
+	    </ul>
+	</div>
     <script type="text/javascript" src="js/knockout-3.2.0.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
-	</body>
+</body>
 </html>

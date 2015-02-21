@@ -66,7 +66,6 @@ function codeAddress() {
       q.lat = results[0].geometry.location.k;
       q.lng = results[0].geometry.location.D;
       q.food = document.getElementById('food').value;
-      console.log(results[0].geometry.location);
       clearMarkers(); //clear previous markers
       ViewModel();
     } else {
@@ -101,7 +100,6 @@ function ViewModel() {
     for (var index in data.response.venues) { 
       var item = data.response.venues[index];
       AllLocations.push(item);
-      console.log(item);
       dataArray.push({lat: item.location.lat, lng: item.location.lng, name: item.name});//put data to LongLatArray 
     }
     setMarkers(dataArray);
@@ -134,7 +132,7 @@ function setMarkers (dataArray) {
 //according to these parametres 
 function clickHandler(data) {
   map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
-  map.setZoom(16);
+  map.setZoom(14);
   for (var i = 0; i < markers.length; i++) {    
     if (data.name === markers[i].content) {      
       toggleBounce(markers[i]); // apply animation
