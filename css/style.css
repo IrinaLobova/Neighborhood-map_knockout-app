@@ -44,6 +44,11 @@ button:hover {
 	position: absolute;
 	right: 30%;
 }
+
+#map-canvas img {
+    max-width : none;
+}
+
 .container {
 	float: left;
 	width: 100%
