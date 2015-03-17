@@ -8,7 +8,13 @@ function ViewModel() {
   var self = this;
   var markers = [];
   self.allLocations = ko.observableArray([]);
-  self.map = ko.observable(initializeMap());
+  var map = initializeMap();
+  /*if google map is unavailable alert a user*/
+  if (!map){
+    alert("Google Maps unavailable. Please, try later");
+    return;     
+  } 
+  self.map = ko.observable(map);
   self.geocoder = ko.observable(initializeGeo(self.map()));
   self.clickHandler = function(data) { moveMap(data, self.map(), markers) };
   self.submitHandler = function() { updateLocation(self.map(), self.geocoder(), self.allLocations, markers) };
@@ -16,6 +22,7 @@ function ViewModel() {
   self.submitHandler();
 }
 
+/*initialize map with predefined parameters*/
 function initializeMap() {
   geocoder = new google.maps.Geocoder();
   var mapOptions = {
@@ -35,7 +42,7 @@ function initializeGeo(map) {
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       map.setCenter(initialLocation);
       q.lat = initialLocation.latitude;
       q.lng = initialLocation.longitude;
@@ -51,7 +58,7 @@ function initializeGeo(map) {
   }
 
   return geocoder;
-
+  /* error handler: if geolocation failes set the map to the default location(cambridge)*/
   function handleNoGeolocation(errorFlag) {
     if (errorFlag == true) {
       initialLocation = cambridge;
@@ -62,6 +69,7 @@ function initializeGeo(map) {
   }
 } 
 
+/* fetch data from Foursquare and set markers on the map accordingly */
 function fetchFoursquare(map, allLocations, markers) {
   allLocations([]); /* removes previous items from the list */
   
@@ -82,7 +90,8 @@ function fetchFoursquare(map, allLocations, markers) {
       var item = data.response.venues[index];
       allLocations.push(item);
       /* put data to dataArray */
-      dataArray.push({lat: item.location.lat, lng: item.location.lng, name: item.name});
+      dataArray.push({lat: item.location.lat, lng: item.location.lng, 
+                      name: item.name, loc: item.location.address + " " + item.location.city});
     }
     setMarkers(dataArray, map, markers);
   });
@@ -97,7 +106,7 @@ function setMarkers(dataArray, map, markers) {
       position: newLatlng,
       map: map,
       animation: google.maps.Animation.DROP, //adds drop animations to the markers
-      content: element.name
+      content: element.name + "<br>" + element.loc // inforwindow content includes venue name and address 
     });
     markers.push(marker);
     
