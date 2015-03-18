@@ -106,7 +106,7 @@ function setMarkers(dataArray, map, markers) {
       position: newLatlng,
       map: map,
       animation: google.maps.Animation.DROP, //adds drop animations to the markers
-      content: element.name + "<br>" + element.loc // infowindow content includes venue name and address 
+      content: element.name + "<br>" + element.loc // inforwindow content includes venue name and address 
     });
     markers.push(marker);
     
@@ -129,6 +129,7 @@ function updateLocation(map, geocoder, allLocations, markers) {
   if (address === '') fetchFoursquare(map, allLocations, markers);
   else geocoder.geocode( { 'address': address }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
+      var newLatlng  = new google.maps.LatLng(results[0].geometry.location);
       map.setCenter(results[0].geometry.location);
       q.lat = results[0].geometry.location.k;
       q.lng = results[0].geometry.location.D;
