@@ -1,7 +1,7 @@
 # frontend-nanodegree-neighborhood-map
 The initial map location is set to Cambridge, MA (my neighborhood). The markers show Thai cuisine places. The list on the right contains all markers shown at the moment.
 
-How to run the app:
+How to run the app: 
 Simply open index.html file in your browser and enjoy the app! 
 
 How to use the app:
