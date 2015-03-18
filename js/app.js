@@ -115,7 +115,7 @@ function setMarkers(dataArray, map, markers) {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map, this);
       infowindow.setContent(this.content);    
-    }); 
+    });
   }
 }
 
@@ -156,8 +156,9 @@ function clearMarkers(markers) {
 function moveMap(data, map, markers) {
   map.setCenter(new google.maps.LatLng(data.location.lat, data.location.lng));
   map.setZoom(14);
-  for (var i = 0; i < markers.length; i++) {    
-    if (data.name === markers[i].content) {      
+  for (var i = 0; i < markers.length; i++) {
+    var content = markers[i].content.split('<br>');    
+    if (data.name === content[0]) {  // checks only if names are the same, but not addresses    
       toggleBounce(markers[i]); // apply animation
     }
   }
