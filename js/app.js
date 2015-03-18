@@ -16,8 +16,8 @@ function ViewModel() {
   } 
   self.map = ko.observable(map);
   self.geocoder = ko.observable(initializeGeo(self.map()));
-  self.clickHandler = function(data) { moveMap(data, self.map(), markers) };
-  self.submitHandler = function() { updateLocation(self.map(), self.geocoder(), self.allLocations, markers) };
+  self.clickHandler = function(data) { moveMap(data, self.map(), markers); };
+  self.submitHandler = function() { updateLocation(self.map(), self.geocoder(), self.allLocations, markers); };
 
   self.submitHandler();
 }
@@ -60,7 +60,7 @@ function initializeGeo(map) {
   return geocoder;
   /* error handler: if geolocation failes set the map to the default location(cambridge)*/
   function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
+    if (errorFlag === true) {
       initialLocation = cambridge;
     } else {
       initialLocation = cambridge;
@@ -106,7 +106,7 @@ function setMarkers(dataArray, map, markers) {
       position: newLatlng,
       map: map,
       animation: google.maps.Animation.DROP, //adds drop animations to the markers
-      content: element.name + "<br>" + element.loc // inforwindow content includes venue name and address 
+      content: element.name + "<br>" + element.loc // infowindow content includes venue name and address 
     });
     markers.push(marker);
     
@@ -129,7 +129,6 @@ function updateLocation(map, geocoder, allLocations, markers) {
   if (address === '') fetchFoursquare(map, allLocations, markers);
   else geocoder.geocode( { 'address': address }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      var newLatlng  = new google.maps.LatLng(results[0].geometry.location);
       map.setCenter(results[0].geometry.location);
       q.lat = results[0].geometry.location.k;
       q.lng = results[0].geometry.location.D;
@@ -165,10 +164,10 @@ function moveMap(data, map, markers) {
 
 /* Create animation for the marker when its corresponding li is clicked */
 function toggleBounce(currentIcon) {
-  if (currentIcon.getAnimation() != null) {
+  if (currentIcon.getAnimation() !== null) {
     currentIcon.setAnimation(null);
   } else {
    currentIcon.setAnimation(google.maps.Animation.BOUNCE);
    setTimeout(function(){ currentIcon.setAnimation(null); }, 1400);
   }
-};
+}
