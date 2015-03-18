@@ -86,21 +86,19 @@ function fetchFoursquare(map, allLocations, markers) {
 
   $.getJSON(foursquareUrl, function(data) {
     /* Once we get the JSON data, put data into an observable array */
-    for (var index in data.response.venues) { 
-      var item = data.response.venues[index];
+    data.response.venues.forEach(function(item) { 
       allLocations.push(item);
       /* put data to dataArray */
       dataArray.push({lat: item.location.lat, lng: item.location.lng, 
                       name: item.name, loc: item.location.address + " " + item.location.city});
-    }
+    });
     setMarkers(dataArray, map, markers);
   });
 } 
 
 /* Take lng and lat from dataArray and apply them to set markers on the map */
 function setMarkers(dataArray, map, markers) {
-  for (var index in dataArray) {  
-    var element = dataArray[index];
+  dataArray.forEach(function(element) {   
     var newLatlng = new google.maps.LatLng(element.lat, element.lng);
     var marker = new google.maps.Marker({
       position: newLatlng,
@@ -116,7 +114,7 @@ function setMarkers(dataArray, map, markers) {
       infowindow.open(map, this);
       infowindow.setContent(this.content);    
     });
-  }
+  });
 }
 
 /* Submit handler */
@@ -129,7 +127,6 @@ function updateLocation(map, geocoder, allLocations, markers) {
   if (address === '') fetchFoursquare(map, allLocations, markers);
   else geocoder.geocode( { 'address': address }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      var newLatlng  = new google.maps.LatLng(results[0].geometry.location);
       map.setCenter(results[0].geometry.location);
       q.lat = results[0].geometry.location.k;
       q.lng = results[0].geometry.location.D;
