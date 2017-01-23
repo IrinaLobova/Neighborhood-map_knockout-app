@@ -1,7 +1,9 @@
-/* Project 5, neighborhood map for Udacidy Frontend Nanodegree
+/* Final Project for CSCIE-3
+   Instructor: Larry Bouthillier
+   Interactive Neighborhood Map
    Author: Irina Lobova */
 
-var q = {lat: 42.36690, lng: -71.10610, food: 'thai'}; /* initial lat, lng and food type */
+var q = {lat: 42.36699, lng: -71.10610, food: 'thai'}; /* initial lat, lng and food type */
 document.addEventListener('DOMContentLoaded', ko.applyBindings(new ViewModel()));
 
 function ViewModel() {
@@ -83,7 +85,7 @@ function fetchFoursquare(map, allLocations, markers) {
   '&m=foursquare';
   
   var dataArray = []; /* Array of venues' names, longitudes and latitudes */ 
-
+  console.log(foursquareUrl);
   $.getJSON(foursquareUrl, function(data) {
     /* Once we get the JSON data, put data into an observable array */
     data.response.venues.forEach(function(item) { 
@@ -94,7 +96,8 @@ function fetchFoursquare(map, allLocations, markers) {
     });
     setMarkers(dataArray, map, markers);
   });
-} 
+}
+
 
 /* Take lng and lat from dataArray and apply them to set markers on the map */
 function setMarkers(dataArray, map, markers) {
@@ -104,7 +107,7 @@ function setMarkers(dataArray, map, markers) {
       position: newLatlng,
       map: map,
       animation: google.maps.Animation.DROP, //adds drop animations to the markers
-      content: element.name + "<br>" + element.loc // inforwindow content includes venue name and address 
+      content: element.name + "<br>" + element.loc // info-window content includes venue name and address 
     });
     markers.push(marker);
     
@@ -128,8 +131,8 @@ function updateLocation(map, geocoder, allLocations, markers) {
   else geocoder.geocode( { 'address': address }, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
-      q.lat = results[0].geometry.location.k;
-      q.lng = results[0].geometry.location.D;
+      q.lat = results[0].geometry.location.A;
+      q.lng = results[0].geometry.location.F;
       q.food = document.getElementById('food').value;
       clearMarkers(markers); /* clear previous markers */     
       fetchFoursquare(map, allLocations, markers);
